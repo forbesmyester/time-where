@@ -1,0 +1,33 @@
+{
+  "name": "time-where",
+  "version": "0.9.0",
+  "description": "Analyzes where you spend time based on Google Takeout Location Data",
+  "directories": {
+    "src": "src",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "find src  test | grep '\\.ts$' | xargs -n 1 tslint && tsc && mocha --require source-map-support/register dest/test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:forbesmyester/time-where.git"
+  },
+  "author": "Matthew Forrester <github.com@speechmarks.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/forbesmyester/time-where/issues"
+  },
+  "homepage": "https://github.com/forbesmyester/time-where",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^2.9.0",
+    "mocha": "^2.4.5",
+    "source-map-support": "^0.4.0",
+    "typescript": "^1.8.10",
+    "typings": "^0.8.1"
+  },
+  "dependencies": {
+    "ramda": "^0.21.0"
+  }
+}
