@@ -17,6 +17,64 @@ describe('Can', function() {
         });
     });
 
+    it('can slice into days', function()  {
+        let data = [
+            {
+                date: new Date('1970-01-09T18:23:14.333Z'),
+                lat: 51.4425,
+                lng: -0.057
+            },
+            {
+                date: new Date('1970-01-10T08:34:14.333Z'),
+                lat: 51.4425,
+                lng: -0.057
+            },
+            {
+                date: new Date('1970-01-10T12:45:14.333Z'),
+                lat: 51.4425,
+                lng: -0.057
+            },
+            {
+                date: new Date('1970-01-11T22:55:14.333Z'),
+                lat: 51.4425, lng: -0.057
+            },
+        ];
+        let expected = [
+            [
+                '1970-01-09',
+                [{
+                    date: new Date('1970-01-09T18:23:14.333Z'),
+                    lat: 51.4425,
+                    lng: -0.057
+                }]
+            ],
+            [
+                '1970-01-10',
+                [
+                    {
+                        date: new Date('1970-01-10T08:34:14.333Z'),
+                        lat: 51.4425,
+                        lng: -0.057
+                    },
+                    {
+                        date: new Date('1970-01-10T12:45:14.333Z'),
+                        lat: 51.4425,
+                        lng: -0.057
+                    }
+                ]
+            ],
+            [
+                '1970-01-11',
+                [{
+                    date: new Date('1970-01-11T22:55:14.333Z'),
+                    lat: 51.4425,
+                    lng: -0.057
+                }]
+            ]
+        ];
+        expect(I.chunkIntoDays(data)).to.eql(expected);
+    });
+
     it('Get the locations someone is at at times', function() {
         let locations = [
             {

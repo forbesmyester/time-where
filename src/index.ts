@@ -1,6 +1,8 @@
 /// <reference path="../typings/main.d.ts" />
+/// <reference path="../my-externals/typescript-ramda/ramda.d.ts" />
 
 import * as T from "./types.ts";
+import * as R from "ramda";
 
 export function convertVisit(src: T.GoogVisit): T.TWVisit {
     return {
@@ -28,4 +30,11 @@ export function getVisitList(interestedIn: T.Location[], v: T.TWVisit): [Date, T
         .filter(isVisitInLocation.bind(this, v))
         .map(({ name }) => name);
     return [v.date, locs];
+}
+
+export function chunkIntoDays(visits: T.TWVisit[]): [string, T.TWVisit[]][] {
+    function getGroup(visit: T.TWVisit) {
+        return visit.date.toISOString().replace(/T.*/, '');
+    }
+    return <[string, T.TWVisit[]][]>R.toPairs(R.groupBy(getGroup, visits));
 }

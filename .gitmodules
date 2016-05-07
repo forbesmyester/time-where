@@ -1,0 +1,6 @@
+[submodule "externals/typescript-ramda"]
+	path = externals/typescript-ramda
+	url = git@github.com:donnut/typescript-ramda.git
+[submodule "my-externals/typescript-ramda"]
+	path = my-externals/typescript-ramda
+	url = git@github.com:forbesmyester/typescript-ramda.git
