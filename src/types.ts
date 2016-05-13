@@ -4,18 +4,25 @@ export interface GoogVisit {
     longitudeE7: number;
 }
 
-export interface TWVisit {
+export interface Visit {
     date: Date;
     lat: number;
     lng: number;
 }
 
 export type Location = {
-    lat1: number,
-    lng1: number,
-    lat2: number,
-    lng2: number
-    name: Place
+    lat1: number;
+    lng1: number;
+    lat2: number;
+    lng2: number;
+    name: Place;
 };
 
-export type Place = String;
+export type Stay = {
+    start: Date;
+    end: Date;
+    place: Place;
+    visits: Visit[];
+};
+
+export type Place = string;

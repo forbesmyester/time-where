@@ -4,7 +4,7 @@
 import * as T from "./types.ts";
 import * as R from "ramda";
 
-export function convertVisit(src: T.GoogVisit): T.TWVisit {
+export function convertGoogVisit(src: T.GoogVisit): T.Visit {
     return {
         date: new Date(Number(src.timestampMs)),
         lat: src.latitudeE7 / 10000000,
@@ -14,7 +14,7 @@ export function convertVisit(src: T.GoogVisit): T.TWVisit {
 
 function numberSorter(a: number, b: number) { return a - b; }
 
-function isVisitInLocation(v: T.TWVisit, l: T.Location): boolean {
+function isVisitInLocation(v: T.Visit, l: T.Location): boolean {
     let lats = [l.lat1, l.lat2];
     let lngs = [l.lng1, l.lng2];
     lats.sort(numberSorter); lngs.sort(numberSorter);
@@ -25,16 +25,77 @@ function isVisitInLocation(v: T.TWVisit, l: T.Location): boolean {
     return true;
 }
 
-export function getVisitList(interestedIn: T.Location[], v: T.TWVisit): [Date, T.Place[]] {
+export function getWhere(interestedIn: T.Location[], v: T.Visit): [Date, T.Place[]] {
     let locs = interestedIn
         .filter(isVisitInLocation.bind(this, v))
         .map(({ name }) => name);
     return [v.date, locs];
 }
 
-export function chunkIntoDays(visits: T.TWVisit[]): [string, T.TWVisit[]][] {
-    function getGroup(visit: T.TWVisit) {
+export function chunkIntoDays(visits: T.Visit[]): [string, T.Visit[]][] {
+    function getGroup(visit: T.Visit) {
         return visit.date.toISOString().replace(/T.*/, '');
     }
-    return <[string, T.TWVisit[]][]>R.toPairs(R.groupBy(getGroup, visits));
+    return <[string, T.Visit[]][]>R.toPairs(R.groupBy(getGroup, visits));
+}
+
+function visitSorter(visit: T.Visit): number {
+    return visit.date.getTime();
+}
+
+export function isCurrentStay(ts: Date) {
+    return function(stay: T.Stay): boolean {
+        if (
+            (stay.start.getTime() <= ts.getTime()) &&
+            (stay.end.getTime() >= ts.getTime())
+        ) {
+            return true;
+        }
+        return false;
+    };
+}
+
+export function getStays(locations: T.Location[], visits: T.Visit[]): T.Stay[] {
+
+    function removeWhere(w: string) {
+        return function(item: string): boolean { return item !== w; };
+    }
+
+    let lastLocations = <T.Place[]>[];
+
+    let worker = (currentStays: T.Stay[], visit: T.Visit): T.Stay[] => {
+        let wheres = getWhere(locations, visit)[1];
+        let nextCurrentLocations = getWhere(locations, visit)[1];
+
+        function tryAddStayToLastStays(stay: T.Stay): T.Stay {
+            if (
+                (wheres.indexOf(stay.place) > -1) &&
+                (lastLocations.indexOf(stay.place) > -1)
+            ) {
+                wheres = R.filter(removeWhere(stay.place), wheres);
+                stay.end = visit.date;
+                stay.visits.push(visit);
+            }
+            return stay;
+        }
+
+        currentStays = R.map(tryAddStayToLastStays, currentStays);
+        lastLocations = nextCurrentLocations;
+
+        return R.reduce(
+            function(acc: T.Stay[], place: T.Place) {
+                acc.push({
+                    start: visit.date,
+                    end: visit.date,
+                    place: place,
+                    visits: [ visit ]
+                });
+                return acc;
+            },
+            currentStays,
+            wheres
+        );
+    };
+
+    return R.reduce(worker, [], R.sortBy(visitSorter, visits));
 }
