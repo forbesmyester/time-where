@@ -199,6 +199,11 @@ describe('Can', function() {
                     date: new Date('1970-01-10T19:02:55.006Z'),
                     lat: 51.42,
                     lng: -0.057
+                },
+                {
+                    date: new Date('1970-01-10T19:02:55.007Z'),
+                    lat: 51.494,
+                    lng: -0.057
                 }
             ];
 
@@ -250,6 +255,18 @@ describe('Can', function() {
                         {
                             date: new Date('1970-01-10T19:02:55.006Z'),
                             lat: 51.42,
+                            lng: -0.057
+                        }
+                    ]
+                },
+                {
+                    start: new Date('1970-01-10T19:02:55.007Z'),
+                    end: new Date('1970-01-10T19:02:55.007Z'),
+                    place: 'Home',
+                    visits: [
+                        {
+                            date: new Date('1970-01-10T19:02:55.007Z'),
+                            lat: 51.494,
                             lng: -0.057
                         }
                     ]
