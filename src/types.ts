@@ -26,3 +26,5 @@ export type Stay = {
 };
 
 export type Place = string;
+
+export type TimeAt = [Place, number];

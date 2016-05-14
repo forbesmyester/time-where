@@ -55,6 +55,31 @@ export function isCurrentStay(ts: Date) {
     };
 }
 
+export function getTimes(stays: T.Stay[]): T.TimeAt[] {
+
+    function mapper(stay: T.Stay): T.TimeAt {
+        return [stay.place, stay.end.getTime() - stay.start.getTime()];
+    }
+
+    function reducer(acc: T.TimeAt[], ta: T.TimeAt): T.TimeAt[] {
+
+        let index = R.findIndex(
+            function(e) { return ta[0] === e[0]; },
+            acc
+        );
+
+        if (index === -1) {
+            acc.push(ta);
+            return acc;
+        }
+
+        acc[index][1] = acc[index][1] + ta[1];
+        return acc;
+    }
+
+    return R.reduce(reducer, [], R.map(mapper, stays));
+}
+
 export function getStays(locations: T.Location[], visits: T.Visit[]): T.Stay[] {
 
     function removeWhere(w: string) {
