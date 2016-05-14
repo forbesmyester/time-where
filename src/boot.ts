@@ -10,18 +10,11 @@ let googData = JSON.parse(
     <string>readFileSync('./LocationHistory.json', {encoding: 'utf8'})
 );
 
-let locations = [
-    // {
-    //     name: 'Home',
-    //     lat1: 51.441483072303946, lng1: -0.058262944221496575,
-    //     lat2: 51.44281050775324, lng2: -0.05610108375549316
-    // },
-    {
-        name: 'Work',
-        lat1: 51.523374017036076, lng1: -0.10573267936706543,
-        lat2: 51.52438199604448, lng2: -0.1040428876876831
-    }
-];
+let locations = [{
+    name: 'Work',
+    lat1: 51.523374017036076, lng1: -0.10573267936706543,
+    lat2: 51.52438199604448, lng2: -0.1040428876876831
+}];
 
 let totalH = 0;
 let totalC = 0;
