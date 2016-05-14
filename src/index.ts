@@ -1,7 +1,7 @@
 /// <reference path="../typings/main.d.ts" />
 /// <reference path="../my-externals/typescript-ramda/ramda.d.ts" />
 
-import * as T from "./types.ts";
+import * as T from "./types";
 import * as R from "ramda";
 
 export function convertGoogVisit(src: T.GoogVisit): T.Visit {
@@ -55,7 +55,7 @@ export function isCurrentStay(ts: Date) {
     };
 }
 
-export function getTimes(stays: T.Stay[]): T.TimeAt[] {
+export function getDurations(stays: T.Stay[]): T.TimeAt[] {
 
     function mapper(stay: T.Stay): T.TimeAt {
         return [stay.place, stay.end.getTime() - stay.start.getTime()];
@@ -123,4 +123,20 @@ export function getStays(locations: T.Location[], visits: T.Visit[]): T.Stay[] {
     };
 
     return R.reduce(worker, [], R.sortBy(visitSorter, visits));
+}
+
+export function run(locations: T.Location[], { locations: googVisits }: { locations: T.GoogVisit[] }): [string, T.TimeAt[]][] {
+
+    function mapper([day, data]: [string, T.Visit[]]): [string, T.TimeAt[]] {
+        let retData = getDurations(getStays(locations, data));
+        return [day, retData];
+    }
+
+    return R.map(
+        mapper,
+        chunkIntoDays(
+            R.map(convertGoogVisit, googVisits)
+        )
+    );
+
 }

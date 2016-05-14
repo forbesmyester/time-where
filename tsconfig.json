@@ -8,5 +8,5 @@
         "target": "es5",
         "outDir": "dest"
     },
-    "files": [ "src/index.ts", "test/index.ts" ]
+    "files": [ "src/index.ts", "test/index.ts", "src/boot.ts" ]
 }

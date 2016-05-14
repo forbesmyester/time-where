@@ -345,7 +345,7 @@ describe('Can', function() {
             }
         ];
 
-        expect(I.getTimes(input)).to.eql([
+        expect(I.getDurations(input)).to.eql([
             ['Home', 2],
             ['Commute', 1],
             ['Work', 0]
