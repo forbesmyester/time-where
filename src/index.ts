@@ -55,6 +55,32 @@ export function isCurrentStay(ts: Date) {
     };
 }
 
+export function getDurationsWithBreak(stays: T.Stay[]): T.TimeAt[] {
+
+    function mapper(stay: T.Stay): T.TimeAt {
+        return [stay.place, stay.end.getTime() - stay.start.getTime()];
+    }
+
+    function reducer(acc: T.Stay[], ta: T.Stay): T.Stay[] {
+
+        let index = R.findIndex(
+            function(e) { return ta.place == e.place; },
+            acc
+        );
+
+        if (index === -1) {
+            acc.push(ta);
+            return acc;
+        }
+
+        acc[index] = R.assocPath(['end'], ta.end, acc[index]);
+        return acc;
+    }
+
+    return R.map(mapper, R.reduce(reducer, [], stays));
+
+}
+
 export function getDurations(stays: T.Stay[]): T.TimeAt[] {
 
     function mapper(stay: T.Stay): T.TimeAt {

@@ -281,73 +281,46 @@ describe('Can', function() {
 
         let input = [
             {
-                start: new Date('1970-01-10T19:02:55.001Z'),
-                end: new Date('1970-01-10T19:02:55.003Z'),
+                start: new Date('1970-01-10T19:02:51.000Z'),
+                end: new Date('1970-01-10T19:02:53.000Z'),
                 place: 'Home',
-                visits: [
-                    {
-                        date: new Date('1970-01-10T19:02:55.001Z'),
-                        lat: 51.492,
-                        lng: -0.057
-                    },
-                    {
-                        date: new Date('1970-01-10T19:02:55.002Z'),
-                        lat: 51.491,
-                        lng: -0.057
-                    },
-                    {
-                        date: new Date('1970-01-10T19:02:55.003Z'),
-                        lat: 51.47,
-                        lng: -0.057
-                    }
-                ]
+                visits: []
             },
             {
-                start: new Date('1970-01-10T19:02:55.003Z'),
-                end: new Date('1970-01-10T19:02:55.004Z'),
+                start: new Date('1970-01-10T19:02:53.000Z'),
+                end: new Date('1970-01-10T19:02:54.000Z'),
                 place: 'Commute',
-                visits: [
-                    {
-                        date: new Date('1970-01-10T19:02:55.003Z'),
-                        lat: 51.47,
-                        lng: -0.057
-                    },
-                    {
-                        date: new Date('1970-01-10T19:02:55.004Z'),
-                        lat: 51.45,
-                        lng: -0.057
-                    }
-                ]
+                visits: []
             },
             {
-                start: new Date('1970-01-10T19:02:55.006Z'),
-                end: new Date('1970-01-10T19:02:55.006Z'),
+                start: new Date('1970-01-10T19:02:56.000Z'),
+                end: new Date('1970-01-10T19:02:56.000Z'),
                 place: 'Work',
-                visits: [
-                    {
-                        date: new Date('1970-01-10T19:02:55.006Z'),
-                        lat: 51.42,
-                        lng: -0.057
-                    }
-                ]
+                visits: []
             },
             {
-                start: new Date('1970-01-10T19:02:55.007Z'),
-                end: new Date('1970-01-10T19:02:55.007Z'),
+                start: new Date('1970-01-10T19:02:57.000Z'),
+                end: new Date('1970-01-10T19:02:57.000Z'),
                 place: 'Home',
-                visits: [
-                    {
-                        date: new Date('1970-01-10T19:02:55.007Z'),
-                        lat: 51.494,
-                        lng: -0.057
-                    }
-                ]
+                visits: []
+            },
+            {
+                start: new Date('1970-01-10T19:02:58.000Z'),
+                end: new Date('1970-01-10T19:02:59.000Z'),
+                place: 'Home',
+                visits: []
             }
         ];
 
+        expect(I.getDurationsWithBreak(input)).to.eql([
+            ['Home', 8000],
+            ['Commute', 1000],
+            ['Work', 0]
+        ]);
+
         expect(I.getDurations(input)).to.eql([
-            ['Home', 2],
-            ['Commute', 1],
+            ['Home', 3000],
+            ['Commute', 1000],
             ['Work', 0]
         ]);
 
